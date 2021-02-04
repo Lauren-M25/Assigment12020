@@ -14,7 +14,7 @@ public class Cell {
     
         int adjbombs = 0; // the number of bombs adjacent to this cell
         char Bstatus = 'x'; // whether or not this cell contains a bomb (b for yes, x for no)
-        char Ostatus = 'c'; // whether or not this cell has been opened (o for opened, c for closed)
+        char OFstatus = 'c'; // whether or not this cell has been opened (o for opened, c for closed)
     
     //*** Instance Variables ***
     
@@ -27,8 +27,7 @@ public class Cell {
     * ****************************************/
     
     public Cell(){
-        
-        this.Ostatus = 'c'; // default cell is closed
+        this.OFstatus = 'c'; // default cell is closed
     }
     
     //*** Getters ***
@@ -65,8 +64,8 @@ public class Cell {
     * Return: Ostatus: char, whether or not the cell is opened
     * ****************************************/
     
-    public char getopenedstatus(){
-        return this.Ostatus;
+    public char getOFstatus(){
+        return this.OFstatus;
     }
     
     //*** Setters ***
@@ -78,7 +77,37 @@ public class Cell {
     * ****************************************/
     
     public void open(){
-        this.Ostatus = 'o'; // open the cell by setting the opened status to 'o'
+        this.OFstatus = 'o'; // open the cell by setting the opened status to 'o'
+    }
+    
+    /*****************************************
+    * Description: open the cell
+    * 
+    * Interface: 
+    * ****************************************/
+    
+    public void flag(){
+        this.OFstatus = 'f'; // open the cell by setting the opened status to 'o'
+    }
+    
+    /*****************************************
+    * Description: open the cell
+    * 
+    * Interface: 
+    * ****************************************/
+    
+    public void placebomb(){
+        this.Bstatus = 'b'; // open the cell by setting the opened status to 'o'
+    }
+    
+    /*****************************************
+    * Description: open the cell
+    * 
+    * Interface: 
+    * ****************************************/
+    
+    public void setadjbombs(int hint){
+        this.adjbombs = hint; // open the cell by setting the opened status to 'o'
     }
     
 } // end of public class

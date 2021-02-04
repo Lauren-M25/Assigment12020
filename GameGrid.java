@@ -7,8 +7,7 @@
  * Description: game grid object for assignment 1: minesweeper
  ***********************************************************************/
 
-// import libraries as needed here
-
+import java.util.*;
 public class GameGrid {
     //*** Class Variables ***
     
@@ -16,6 +15,12 @@ public class GameGrid {
        int dimensions = 0;
     
     //*** Instance Variables ***
+    
+    Random ran = new Random();
+    
+    //*** Constants ***
+    
+    final double Bpercentmultiplier = 0.16; // the multiplier to have 16 percent of cells have bombs
     
     //*** Constructors ***
     
@@ -28,6 +33,17 @@ public class GameGrid {
     public GameGrid(int dimensions){
         Cell[][] cells = new Cell[dimensions][dimensions];
         this.dimensions = dimensions;
+        int numberofbombs = (int)Bpercentmultiplier * this.dimensions * this.dimensions;
+        
+        for(int i = 0; i < numberofbombs; i++){
+            cells[ran.nextInt(this.dimensions)][ran.nextInt(this.dimensions)].placebomb();
+        }
+        
+        for(int j = 0; j < this.dimensions - 1; j++){
+            for(int k = 0; k < this.dimensions - 1; k++){
+                cells[j][k].setadjbombs(calculateHint(j,k));
+            } // end row
+        } // end calculate hints for the table
     }
     
     //*** Getters ***
@@ -52,7 +68,7 @@ public class GameGrid {
     * Return: adjbombs: int, the number of adjacent bombs
     * ****************************************/
     
-    public int getadjB(int x, int y){
+    public int getHint(int x, int y){
         return this.cells[x][y].getadjbombs();
     }
     
@@ -69,15 +85,15 @@ public class GameGrid {
     }
     
     /*****************************************
-    * Description: get the opened status of the cell
+    * Description: get the status of the cell (opened, flagged, or closed)
     * 
     * Interface:
     * 
-    * Return: Ostatus: char, whether or not the cell is opened
+    * Return: OFstatus: char, the status of the cell (o, f, c)
     * ****************************************/
     
-    public char getOstatus(int x, int y){
-        return this.cells[x][y].getopenedstatus();
+    public char getOFstatus(int x, int y){
+        return this.cells[x][y].getOFstatus();
     }
     
     /*****************************************
@@ -88,9 +104,8 @@ public class GameGrid {
     * Return: Ostatus: char, whether or not the cell is opened
     * ****************************************/
     
-    public int getHint(int x, int y){
-        int hint = 0;
-        
+    private int calculateHint(int x, int y){
+        int hint = 0; // the counter of adjacent bombs
         
         if(x > 0 && y > 0 && x < this.dimensions - 1 && y < this.dimensions - 1){
             for(int i = x - 1; i < x + 1; i++){
@@ -100,77 +115,78 @@ public class GameGrid {
                     } else {
                     // there is no bomb int the adjacent cell
                     } // end bomb or no bomb
-                } // end row
-            } // end adjacent
-        } else {
-        
-            int a = 0;
-            int b = 0;
-        
-            if(x == 0){
-                a = x;
-            } else {
-                a = x-1;
-            }
-        
-            if(y == 0){
-                b = y;
-            } else {
-                b = y-1;
-            }
-        
-            for(int i = a; i < a+1; x++){
-                for(int k = b; k < b+1; y++){
-                    if(cells[i][k].getbombstatus() == 'b'){
-                        hint++;
-                    } else {
-                        // there is no bomb int the adjacent cell
-                    } // end bomb or no bomb
                 }
-            }
-        }
+            } // end count adjacent bombs
+        } else { // end center cell
+            
+            if(x == this.dimensions - 1 || x == 0 && y == x || y == 0 || y == this.dimensions - 1){
+                int a = 0; //declare index range variables
+                int b = 0; //declare index range variables
         
+                if(x == 0){
+                    a = x;
+                } else {
+                    a = x-1;
+                } // end top or bottom corner
         
-        if(x > 0){
-            if(cells[x-1][y].getbombstatus() == 'b'){
-                hint ++;
-            }
-        }
+                if(y == 0){
+                    b = y;
+                } else {
+                    b = y-1;
+                } // end left or right corner
         
-        if(x > 0 && y < this.dimensions){
-            if(cells[x-1][y+1].getbombstatus() == 'b'){
-                hint ++;
-            }
-        }
-        
-        if(y > 0){
-            if(cells[x][y-1].getbombstatus() == 'b'){
-                hint ++;
-            }
-        }
-        
-        if(y < this.dimensions){
-            if(cells[x][y+1].getbombstatus() == 'b'){
-                hint ++;
-            }
-        }
-        
-        if(x < this.dimensions && y > 0){
-            if(cells[x+1][y-1].getbombstatus() == 'b'){
-                hint ++;
-            }
-        }
-        
-        if(x < this.dimensions){
-            if(cells[x+1][y].getbombstatus() == 'b'){
-                hint ++;
-            }
-        }
-        
-        if(x < this.dimensions && y < this.dimensions){
-            if(cells[x+1][y+1].getbombstatus() == 'b'){
-                hint ++;
-            }
+                for(int i = a; i < a+1; i++){
+                    for(int k = b; k < b+1; k++){
+                        if(cells[i][k].getbombstatus() == 'b'){
+                            hint++;
+                        } else {
+                            // there is no bomb int the adjacent cell
+                        } // end bomb or no bomb
+                    }
+                } // end count adjacent bombs
+            } else { // end corner cell
+                
+                int a = 0; //declare index range variables
+                int b = 0; //declare index range variables
+                int c = 0; //declare index range variables
+                int d = 0; //declare index range variables
+                
+                if(x == 0){
+                    a = x-1;
+                    b = x;
+                    c = y-1;
+                    d = y+1;
+                } else { // end top edge
+                    if(x == this.dimensions - 1){
+                        a = x;
+                        b = x+1;
+                        c = y-1;
+                        d = y+1;
+                    } else { // end bottom edge
+                        if(y == 0){
+                            a = x-1;
+                            b = x+1;
+                            c = y-1;
+                            d = y;
+                        } else { // end left edge
+                            a = x-1;
+                            b = x+1;
+                            c = y;
+                            d = y+1;
+                        } // end right edge
+                    }
+                } // end which edge for index range variables
+                
+                for(int i = a; i < b; i++){
+                    for(int k = c; k < d; k++){
+                        if(cells[i][k].getbombstatus() == 'b'){
+                            hint++;
+                        } else {
+                            // there is no bomb int the adjacent cell
+                        } // end bomb or no bomb
+                    }
+                } // end count adjacent bombs
+            } // end edge cell
         }
         
         return hint;
@@ -184,8 +200,18 @@ public class GameGrid {
     * Interface:
     * ****************************************/
     
-    public void opencell(int x, int y){
-        this.cells[x][y].open(); // open the cell by setting the opened status to 'o'
+    public void open(int x, int y){
+        this.cells[x][y].open(); // open the cell by setting the status to 'o'
+    }
+    
+    /*****************************************
+    * Description: open a cell
+    * 
+    * Interface:
+    * ****************************************/
+    
+    public void flag(int x, int y){
+        this.cells[x][y].flag(); // flag the cell by setting the status to 'f'
     }
     
 } // end of public class
