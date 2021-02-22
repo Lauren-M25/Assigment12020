@@ -202,10 +202,103 @@ public class GameGrid {
     
     public void open(int x, int y){
         this.cells[x][y].open(); // open the cell by setting the status to 'o'
+        if(getHint(x,y) == 0){
+            openAdj(x,y);
+        }
     }
     
     /*****************************************
-    * Description: open a cell
+    * Description: open adjacent cells
+    * 
+    * Interface:
+    * ****************************************/
+    
+    public void openAdj(int x, int y){
+        if(x > 0 && y > 0 && x < this.dimensions - 1 && y < this.dimensions - 1){
+            for(int i = x - 1; i < x + 1; i++){
+                for(int k = y - 1; k < y + 1; k++){
+                    if(i == x && k == y){
+                    
+                    } else {
+                        open(i,k);
+                    } // open the cell
+                } // end row
+            } // end adjacent
+        } else { // end center cell
+            
+            if(x == this.dimensions - 1 || x == 0 && y == x || y == 0 || y == this.dimensions - 1){
+                int a = 0; //declare index range variables
+                int b = 0; //declare index range variables
+        
+                if(x == 0){
+                    a = x;
+                } else {
+                    a = x-1;
+                } // end top or bottom corner
+        
+                if(y == 0){
+                    b = y;
+                } else {
+                    b = y-1;
+                } // end left or right corner
+        
+                for(int i = a; i < a+1; i++){
+                    for(int k = b; k < b+1; k++){
+                        if(i == x && k == y){
+                    
+                        } else {
+                            open(i,k);
+                        } // open cell
+                    }
+                } // end adjacent
+            } else { // end corner cell
+                
+                int a = 0; //declare index range variables
+                int b = 0; //declare index range variables
+                int c = 0; //declare index range variables
+                int d = 0; //declare index range variables
+                
+                if(x == 0){
+                    a = x-1;
+                    b = x;
+                    c = y-1;
+                    d = y+1;
+                } else { // end top edge
+                    if(x == this.dimensions - 1){
+                        a = x;
+                        b = x+1;
+                        c = y-1;
+                        d = y+1;
+                    } else { // end bottom edge
+                        if(y == 0){
+                            a = x-1;
+                            b = x+1;
+                            c = y-1;
+                            d = y;
+                        } else { // end left edge
+                            a = x-1;
+                            b = x+1;
+                            c = y;
+                            d = y+1;
+                        } // end right edge
+                    }
+                } // end which edge for index range variables
+                
+                for(int i = a; i < b; i++){
+                    for(int k = c; k < d; k++){
+                        if(i == x && k == y){
+                            
+                        } else {
+                            open(i,k);
+                        } // open cell
+                    }
+                } // end adjacent
+            } // end edge cell
+        }
+    }
+    
+    /*****************************************
+    * Description: flag a cell
     * 
     * Interface:
     * ****************************************/

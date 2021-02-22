@@ -13,7 +13,7 @@ public class Cell {
     //*** Class Variables ***
     
         int adjbombs = 0; // the number of bombs adjacent to this cell
-        char Bstatus = 'x'; // whether or not this cell contains a bomb (b for yes, x for no)
+        char Bstatus = 'X'; // whether or not this cell contains a bomb (b for yes, x for no)
         char OFstatus = 'c'; // whether or not this cell has been opened (o for opened, c for closed)
     
     //*** Instance Variables ***
@@ -87,7 +87,7 @@ public class Cell {
     * ****************************************/
     
     public void flag(){
-        this.OFstatus = 'f'; // open the cell by setting the opened status to 'o'
+        this.OFstatus = 'F'; // open the cell by setting the opened status to 'o'
     }
     
     /*****************************************
@@ -97,7 +97,7 @@ public class Cell {
     * ****************************************/
     
     public void placebomb(){
-        this.Bstatus = 'b'; // open the cell by setting the opened status to 'o'
+        this.Bstatus = 'B'; // open the cell by setting the opened status to 'o'
     }
     
     /*****************************************
