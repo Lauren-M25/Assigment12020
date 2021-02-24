@@ -56,6 +56,18 @@ public class GameGrid {
     * Return: dimensions: int, the number of rows and columns in the grid
     * ****************************************/
     
+    public Cell getcell(int x, int y){
+        return this.cells[x][y];
+    }
+    
+    /*****************************************
+    * Description: get the dimensions of the cell
+    * 
+    * Interface:
+    * 
+    * Return: dimensions: int, the number of rows and columns in the grid
+    * ****************************************/
+    
     public int getdimensions(){
         return this.dimensions;
     }

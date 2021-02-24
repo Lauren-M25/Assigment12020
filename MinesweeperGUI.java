@@ -52,6 +52,15 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         });
         
         frame = new javax.swing.JFrame("Mine Sweeper");
+        this.setLayout(null);
+        
+        frame.add(header);
+        frame.add(gridDimensionsLabel);
+        frame.add(winLoseMessage);
+        frame.add(winLoseMessage2);
+        frame.add(startGame);
+        frame.add(playAgain);
+        frame.add(dimensionsList);
         
         dimensionsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         
@@ -59,23 +68,51 @@ public class MinesweeperGUI extends javax.swing.JFrame{
     
     private void startGameActionPerformed(java.awt.event.ActionEvent evt){
         JButton[][] cells = new JButton[dimensionsList.getSelectedIndex()][dimensionsList.getSelectedIndex()];
+        GameGrid gameGrid = new GameGrid(dimensionsList.getSelectedIndex());
         for(int i = 0; i < dimensionsList.getSelectedIndex(); i++){
             for(int j = 0; j < dimensionsList.getSelectedIndex(); j++){
-                cells[i][j].addActionListener(new java.awt.event.ActionListener(){
-                    public void actionPerformed(java.awt.event.ActionEvent evt){
-                        cellActionPerformed(evt);
+                int x = i;
+                int y = j;
+                cells[i][j].addMouseListener(new MouseAdapter(){
+                    public void mouseReleased(MouseEvent e){
+                        Point p = e.getPoint();
+                        if(cells[x][y].contains(p)){
+                            if(e.isMetaDown()){
+                                cellRClicked(evt, gameGrid, cells[x][y], x, y);
+                            } else {
+                                cellLClicked(evt, gameGrid, cells[x][y], x, y);
+                            }
+                        }
                     }
                 });
             }
         }
-        GameGrid gameGrid = new GameGrid(dimensionsList.getSelectedIndex());
     }
     
     private void playAgainActionPerformed(java.awt.event.ActionEvent evt){
         
     }
     
-    private void cellActionPerformed(java.awt.event.ActionEvent evt){
+    private void cellRClicked(java.awt.event.ActionEvent evt, GameGrid gameGrid, JButton cellButton, int x, int y){
+        if(gameGrid.getBstatus(x,y) == 'B'){
+            cellButton.setText("B");
+            lose();
+        } else {
+            gameGrid.open(x,y);
+            cellButton.setText(String.valueOf(gameGrid.getHint(x,y)));
+        }
+    }
+    
+    private void cellLClicked(java.awt.event.ActionEvent evt, GameGrid gameGrid, JButton cellButton, int x, int y){
+        gameGrid.flag(x,y);
+        cellButton.setText("F");
+    }
+    
+    private void lose(){
+        
+    }
+    
+    private void startGame(java.awt.event.ActionEvent evt){
         
     }
     

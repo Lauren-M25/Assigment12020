@@ -81,7 +81,7 @@ public class Cell {
     }
     
     /*****************************************
-    * Description: open the cell
+    * Description: flag the cell
     * 
     * Interface: 
     * ****************************************/
@@ -91,7 +91,7 @@ public class Cell {
     }
     
     /*****************************************
-    * Description: open the cell
+    * Description: place a bomb in the cell
     * 
     * Interface: 
     * ****************************************/
@@ -101,7 +101,7 @@ public class Cell {
     }
     
     /*****************************************
-    * Description: open the cell
+    * Description: set the hint (number of adjacent bombs)
     * 
     * Interface: 
     * ****************************************/
