@@ -30,15 +30,15 @@ public class MinesweeperGUI extends javax.swing.JFrame{
     private void initializeComp(){
         header = new javax.swing.JLabel("Minesweeper");
         header.setPreferredSize(new Dimension(400, 400));
-        gridDimensionsLabel = new javax.swing.JLabel("Please select your grid dimensions:");
+        //gridDimensionsLabel = new javax.swing.JLabel("Please select your grid dimensions:");
         winLoseMessage = new javax.swing.JLabel("You Win");
         winLoseMessage2 = new javax.swing.JLabel("Congradulations!");
         
         startGame = new javax.swing.JButton();
         playAgain = new javax.swing.JButton();
         
-        String[] dimensionsOptions = {"5 x 5", "6 x 6", "7 x 7", "8 x 8", "9 x 9", "10 x 10"};
-        JComboBox<String> dimensionsChoice = new JComboBox(dimensionsOptions);
+        //String[] dimensionsOptions = {"5 x 5", "6 x 6", "7 x 7", "8 x 8", "9 x 9", "10 x 10"};
+        //JComboBox<String> dimensionsChoice = new JComboBox(dimensionsOptions);
         
         frame = new javax.swing.JFrame("Mine Sweeper");
         frame.setPreferredSize(new Dimension (600, 600));
@@ -53,17 +53,17 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
         .addComponent(header)
-        .addComponent(gridDimensionsLabel)
+        //.addComponent(gridDimensionsLabel)
         .addComponent(winLoseMessage)
-        .addComponent(dimensionsChoice)
+        //.addComponent(dimensionsChoice)
         .addComponent(startGame));
         
         layout.setVerticalGroup(layout.createSequentialGroup()
         .addComponent(header)
-        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-        .addComponent(gridDimensionsLabel)
-        .addComponent(winLoseMessage))
-        .addComponent(dimensionsChoice)
+        //.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+        //.addComponent(gridDimensionsLabel)
+        .addComponent(winLoseMessage)//)
+        //.addComponent(dimensionsChoice)
         .addComponent(startGame));
         
         winLoseMessage.setVisible(false);
@@ -71,7 +71,8 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         startGame.setText("Start Game");
         startGame.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt){
-                startGameActionPerformed(evt, panel);
+                //int dimensions = (dimensionsChoice.getSelectedIndex() + 5);
+                startGameActionPerformed(evt, panel/*, dimensions*/);
             }
         });
     
@@ -90,11 +91,11 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         
     }
     
-    private void startGameActionPerformed(java.awt.event.ActionEvent evt, JPanel panel){
-        JButton[][] cells = new JButton[(dimensionsChoice.getSelectedIndex() + 5)][(dimensionsChoice.getSelectedIndex() + 5)];
-        gameGrid = new GameGrid((dimensionsChoice.getSelectedIndex() + 5));
-        for(int i = 0; i < (dimensionsChoice.getSelectedIndex() + 5); i++){
-            for(int j = 0; j < (dimensionsChoice.getSelectedIndex() + 5); j++){
+    private void startGameActionPerformed(java.awt.event.ActionEvent evt, JPanel panel/*, int dimensions*/){
+        JButton[][] cells = new JButton[10][10];
+        gameGrid = new GameGrid(10);
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
                 int x = i;
                 int y = j;
                 cells[i][j].addMouseListener(new MouseAdapter(){
@@ -112,10 +113,10 @@ public class MinesweeperGUI extends javax.swing.JFrame{
             }
         }
 
-        panel.setLayout(new GridLayout((dimensionsChoice.getSelectedIndex() + 5), (dimensionsChoice.getSelectedIndex() + 5)));
+        panel.setLayout(new GridLayout(10, 10));
         
-        for(int i = 0; i < (dimensionsChoice.getSelectedIndex() + 5); i++){
-            for(int j = 0; j < (dimensionsChoice.getSelectedIndex() + 5); j++){
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
                 panel.add(cells[i][j]);
             }
         }

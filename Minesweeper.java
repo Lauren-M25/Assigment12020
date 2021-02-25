@@ -21,18 +21,18 @@ public class Minesweeper {  // begin class
     
     // ********** declaration of variables **********
 
-        String strin;		// string data input from keyboard
-        String strout;		// processed info string to be output
-        String bannerOut;		// string to print banner to message dialogs
+        String strin;       // string data input from keyboard
+        String strout;      // processed info string to be output
+        String bannerOut;       // string to print banner to message dialogs
 
-        String prompt;		// prompt for use in input dialogs
+        String prompt;      // prompt for use in input dialogs
 
-        String delim = "[ :]+";	// delimiter string for splitting input string
+        String delim = "[ :]+"; // delimiter string for splitting input string
         String[] tokens;                        // string array for gathering input
         
-        String tabSpace = "      ";	// six spaces
+        String tabSpace = "      "; // six spaces
         String nl = System.lineSeparator(); // new line character for file writing
-    	
+        
     // ***** create objects *******
     
         //ConsoleReader console = new ConsoleReader(System.in);
@@ -40,13 +40,13 @@ public class Minesweeper {  // begin class
         
         //BufferedReader fin = new BufferedReader(new FileReader("demo1Data.txt"));
         PrintWriter fout = new PrintWriter(new BufferedWriter(new FileWriter("outFile.txt")));
-    	
+        
     // ********** Print output Banner **********
 
         System.out.println("*******************************************");
         System.out.println("Name: Lauren M");
         System.out.println("Class: CS40S");
-        System.out.println("Assignment:	A1");
+        System.out.println("Assignment: A1");
         System.out.println("*******************************************");
 
         bannerOut = "*******************************************" + nl;
@@ -56,22 +56,22 @@ public class Minesweeper {  // begin class
         bannerOut += "*******************************************" + nl + nl;
         
         fout.print(bannerOut);
-    	
+        
     // ************************ get input **********************
 /* input will now come from an external file so there
         will not normally be a need for a prompt
     
-        prompt = "Enter your prompt text here. \n";	
+        prompt = "Enter your prompt text here. \n"; 
         prompt += "you may need to add additional lines\n";
         prompt += "or delete some of these prompt lines.\n\n";
 
-        strin = JOptionPane.showInputDialog(bannerOut + prompt);	 
+        strin = JOptionPane.showInputDialog(bannerOut + prompt);     
 */
         // read a line of data from the external text file
 
     // ************************ processing ***************************
         
-
+        
 
     // ************************ print output ****************************
     
