@@ -149,7 +149,7 @@ public class GameGrid {
         
                 for(int i = a; i < a+1; i++){
                     for(int k = b; k < b+1; k++){
-                        if(cells[i][k].getbombstatus() == 'b'){
+                        if(cells[i][k].getbombstatus() == 'B'){
                             hint++;
                         } else {
                             // there is no bomb int the adjacent cell
@@ -191,7 +191,7 @@ public class GameGrid {
                 
                 for(int i = a; i < b; i++){
                     for(int k = c; k < d; k++){
-                        if(cells[i][k].getbombstatus() == 'b'){
+                        if(cells[i][k].getbombstatus() == 'B'){
                             hint++;
                         } else {
                             // there is no bomb int the adjacent cell
