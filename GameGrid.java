@@ -11,13 +11,13 @@ import java.util.*;
 public class GameGrid {
     //*** Class Variables ***
     
-       Cell[][] cells = null;
-       int dimensions = 0;
-       int numberofbombs = 0;
+       Cell[][] cells; // an array of cell objects
+       int dimensions = 0; // the square dimensions of the grid
+       int numberofbombs = 0; // the number of bombs in the grid
     
     //*** Instance Variables ***
     
-    Random ran = new Random();
+    Random ran = new Random(); // random number generator
     
     //*** Constants ***
     
@@ -26,23 +26,30 @@ public class GameGrid {
     //*** Constructors ***
     
     /*****************************************
-    * Description: the grid of cells for the minesweeper game
+    * Description: constructs the grid of cells for the minesweeper game
     * 
     * Interface:
     * ****************************************/
     
     public GameGrid(int dimensions){
-        Cell[][] cells = new Cell[dimensions][dimensions];
-        this.dimensions = dimensions;
-        this.numberofbombs = (int)Bpercentmultiplier * this.dimensions * this.dimensions;
-        
-        for(int i = 0; i < numberofbombs; i++){
-            cells[ran.nextInt(this.dimensions)][ran.nextInt(this.dimensions)].placebomb();
-        }
+        Cell[][] cells = new Cell[dimensions][dimensions]; // declare the length of the 2 dimensional cell array
         
         for(int j = 0; j < this.dimensions - 1; j++){
             for(int k = 0; k < this.dimensions - 1; k++){
-                cells[j][k].setadjbombs(calculateHint(j,k));
+                cells[j][k] = new Cell(); // initialize this cell
+            } // end row
+        } // end calculate hints for the table
+        
+        this.dimensions = dimensions; // set the dimensions variable to the chosen dimensions
+        this.numberofbombs = (int)Bpercentmultiplier * this.dimensions * this.dimensions; // set the number of bombs based on the dimensions
+        
+        for(int i = 0; i < numberofbombs; i++){
+            cells[ran.nextInt(this.dimensions)][ran.nextInt(this.dimensions)].placebomb(); // place a bomb in a random cell
+        } // end place bombs
+        
+        for(int j = 0; j < this.dimensions - 1; j++){
+            for(int k = 0; k < this.dimensions - 1; k++){
+                cells[j][k].setadjbombs(this.calculateHint(j,k)); // calculate and set the hint for the cell // error in calculateHint method
             } // end row
         } // end calculate hints for the table
     }
@@ -50,11 +57,11 @@ public class GameGrid {
     //*** Getters ***
     
     /*****************************************
-    * Description: get the dimensions of the cell
+    * Description: get the cell
     * 
     * Interface:
     * 
-    * Return: dimensions: int, the number of rows and columns in the grid
+    * Return: cell: Cell, a cell at the desired index
     * ****************************************/
     
     public Cell getcell(int x, int y){
@@ -74,7 +81,7 @@ public class GameGrid {
     }
     
     /*****************************************
-    * Description: get the number of adjacent bombs from a cell
+    * Description: get the number of adjacent bombs from a cell (the hint)
     * 
     * Interface:
     * 
@@ -110,11 +117,11 @@ public class GameGrid {
     }
     
     /*****************************************
-    * Description: get the opened status of the cell
+    * Description: calculate the hint
     * 
     * Interface:
     * 
-    * Return: Ostatus: char, whether or not the cell is opened
+    * Return: hint: int, the number of adjacent cells with bombs
     * ****************************************/
     
     private int calculateHint(int x, int y){
@@ -126,7 +133,7 @@ public class GameGrid {
                     if(cells[i][k].getbombstatus() == 'b'){
                     hint++;
                     } else {
-                    // there is no bomb int the adjacent cell
+                    // there is no bomb in the cell
                     } // end bomb or no bomb
                 }
             } // end count adjacent bombs
@@ -150,8 +157,14 @@ public class GameGrid {
         
                 for(int i = a; i < a+1; i++){
                     for(int k = b; k < b+1; k++){
-                        if(cells[i][k].getbombstatus() == 'B'){
+                        try{
+                        if(cells[i][k].getbombstatus() == 'B'){ // error on this line
                             hint++;
+                        } else {
+                            // there is no bomb in the cell
+                        }
+                        } catch (NullPointerException e){
+                            System.out.println("Random error");
                         }
                     }
                 } // end count adjacent bombs
@@ -193,7 +206,7 @@ public class GameGrid {
                         if(cells[i][k].getbombstatus() == 'B'){
                             hint++;
                         } else {
-                            // there is no bomb int the adjacent cell
+                            // there is no bomb in the cell
                         } // end bomb or no bomb
                     }
                 } // end count adjacent bombs
@@ -210,25 +223,26 @@ public class GameGrid {
     * ****************************************/
     
     public String printGrid(){
-        String grid = "";
+        String grid = ""; // a string that will contain the grid
         
         for(int i = 0; i < this.dimensions; i++){
             for(int j = 0; j < this.dimensions; i++){
                 if(getOFstatus(i,j) == 'o'){
                     if(getBstatus(i,j) == 'B'){
-                        grid += "B ";
+                        grid += "B "; // the cell has a bomb
                     } else {
-                        grid += getHint(i,j);
+                        grid += getHint(i,j); // print the hint
                     }
-                } else {
+                } // end opened cell
+                else {
                     if(getOFstatus(i,j) == 'f'){
-                        grid += "F ";
+                        grid += "F "; // the cell is flagged
                     } else {
-                        grid += "X ";
+                        grid += "X "; // the cell is closed
                     }
-                }
+                } // end closed or flagged cell
             }
-            grid += "/nl";
+            grid += "/nl"; // next row of the grid
         }
         
         return grid;
@@ -240,19 +254,21 @@ public class GameGrid {
     * Description: open a cell
     * 
     * Interface:
+    * 
+    * Return: bombhit: boolean, whether or not the user has hit a bomb
     * ****************************************/
     
     public boolean open(int x, int y){
         this.cells[x][y].open(); // open the cell by setting the status to 'o'
         if(getHint(x,y) == 0){
             openAdj(x,y);
-        }
+        } // chain reaction if there are no adjacent bombs
         
-        boolean bombhit = false;
+        boolean bombhit = false; // whether or not the user has hit a bomb
         
         if(this.cells[x][y].getbombstatus() == 'B'){
             bombhit = true;
-        }
+        } // end user has hit a bomb
         
         return bombhit;
     }

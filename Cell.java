@@ -21,13 +21,15 @@ public class Cell {
     //*** Constructors ***
     
     /*****************************************
-    * Description: a cell of the minesweeper game
+    * Description: constructs a cell of the minesweeper game
     * 
     * Interface:
     * ****************************************/
     
     public Cell(){
         this.OFstatus = 'c'; // default cell is closed
+        this.Bstatus = 'X'; // default cell does not contain a bomb
+        this.adjbombs = 0; // default cell has no adjacent bombs
     }
     
     //*** Getters ***
@@ -87,7 +89,7 @@ public class Cell {
     * ****************************************/
     
     public void flag(){
-        this.OFstatus = 'f'; // open the cell by setting the opened status to 'o'
+        this.OFstatus = 'f'; // flag the cell by setting the status to 'f'
     }
     
     /*****************************************
@@ -97,7 +99,7 @@ public class Cell {
     * ****************************************/
     
     public void placebomb(){
-        this.Bstatus = 'B'; // open the cell by setting the opened status to 'o'
+        this.Bstatus = 'B'; // place a bomb in the cell by setting the bomb status to 'B'
     }
     
     /*****************************************
@@ -107,7 +109,7 @@ public class Cell {
     * ****************************************/
     
     public void setadjbombs(int hint){
-        this.adjbombs = hint; // open the cell by setting the opened status to 'o'
+        this.adjbombs = hint; // set the number of adjbombs to the calculated hint
     }
     
 } // end of public class

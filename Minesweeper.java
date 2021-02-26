@@ -33,6 +33,9 @@ public class Minesweeper {  // begin class
         String tabSpace = "      "; // six spaces
         String nl = System.lineSeparator(); // new line character for file writing
         
+        int dimensions = 0; // the dimensions of the game grid
+        JFrame frame = new JFrame(); // frame for printing grid and win or lose message
+        
     // ***** create objects *******
     
         //ConsoleReader console = new ConsoleReader(System.in);
@@ -62,46 +65,58 @@ public class Minesweeper {  // begin class
         prompt = "Welcome to Mine Sweeper! \n";
         prompt += "Please enter your desired grid dimensions (5 x 5 - 10 x 10)";
 
-        strin = JOptionPane.showInputDialog(bannerOut + prompt);
+        strin = JOptionPane.showInputDialog(bannerOut + prompt); // get the game grid dimensions
         
         tokens = strin.split(delim);
         
-        GameGrid gameGrid = new GameGrid(Integer.parseInt(tokens[0]));
+        dimensions = Integer.parseInt(tokens[0]);
+        
+        GameGrid gameGrid = new GameGrid(dimensions); // create game grid // error in calculateHint method in constructor
 
     // ************************ processing ***************************
         
-        int cellsopened = 0;
-        boolean bombhit = false;
+        int cellsopened = 0; // declare control variables
+        boolean bombhit = false; // declare control variables
     
         while(cellsopened < (gameGrid.getdimensions() * gameGrid.getdimensions()) || bombhit == true){
     
         prompt = "To make a move, enter the row number (starting at 1) and the column number of the cell you wish to open or flag. /nl";
         prompt += "example: x,y";
 
-        strin = JOptionPane.showInputDialog(bannerOut + prompt);
+        strin = JOptionPane.showInputDialog(bannerOut + prompt); // get the cell indexes
         
         delim = "[,]+";
         
         tokens = strin.split(delim);
         
-        int cellX = Integer.parseInt(tokens[0]);
-        int cellY = Integer.parseInt(tokens[1]);
+        int cellX = Integer.parseInt(tokens[0]); // the x index of the cell
+        int cellY = Integer.parseInt(tokens[1]); // the y index of the cell
         
         prompt = "You have selected cell " + strin + ". Enter O to open, or F to flag.";
 
-        strin = JOptionPane.showInputDialog(bannerOut + prompt);
+        strin = JOptionPane.showInputDialog(bannerOut + prompt); // get flag or open
         
         if(strin == "O"){
-            bombhit = gameGrid.open(cellX, cellY);
+            bombhit = gameGrid.open(cellX, cellY); // open the cell // if a bomb is hit, the open method will return a true boolean
         } else {
-            gameGrid.flag(cellX, cellY);
+            gameGrid.flag(cellX, cellY); // flag the cell
         }
         
-        gameGrid.printGrid();
-    }
+        JOptionPane.showMessageDialog(frame, gameGrid.printGrid()); // print the grid
+    } // end game
 
     // ************************ print output ****************************
     
+    if(bombhit == true){
+        prompt = "You hit a bomb! \n";
+        prompt += "GAME OVER";
+    } // end lose message
+    else {
+        prompt = "Congradulations! \n";
+        prompt += "YOU WIN";
+    } // end win message
+    
+    JOptionPane.showMessageDialog(frame, bannerOut + prompt); // print win or lose message
     
     // ******** closing message *********
         
