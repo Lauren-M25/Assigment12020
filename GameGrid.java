@@ -13,6 +13,7 @@ public class GameGrid {
     
        Cell[][] cells = null;
        int dimensions = 0;
+       int numberofbombs = 0;
     
     //*** Instance Variables ***
     
@@ -33,7 +34,7 @@ public class GameGrid {
     public GameGrid(int dimensions){
         Cell[][] cells = new Cell[dimensions][dimensions];
         this.dimensions = dimensions;
-        int numberofbombs = (int)Bpercentmultiplier * this.dimensions * this.dimensions;
+        this.numberofbombs = (int)Bpercentmultiplier * this.dimensions * this.dimensions;
         
         for(int i = 0; i < numberofbombs; i++){
             cells[ran.nextInt(this.dimensions)][ran.nextInt(this.dimensions)].placebomb();
@@ -151,9 +152,7 @@ public class GameGrid {
                     for(int k = b; k < b+1; k++){
                         if(cells[i][k].getbombstatus() == 'B'){
                             hint++;
-                        } else {
-                            // there is no bomb int the adjacent cell
-                        } // end bomb or no bomb
+                        }
                     }
                 } // end count adjacent bombs
             } else { // end corner cell
@@ -204,6 +203,37 @@ public class GameGrid {
         return hint;
     }
     
+    /*****************************************
+    * Description: print the grid
+    * 
+    * Interface:
+    * ****************************************/
+    
+    public String printGrid(){
+        String grid = "";
+        
+        for(int i = 0; i < this.dimensions; i++){
+            for(int j = 0; j < this.dimensions; i++){
+                if(getOFstatus(i,j) == 'o'){
+                    if(getBstatus(i,j) == 'B'){
+                        grid += "B ";
+                    } else {
+                        grid += getHint(i,j);
+                    }
+                } else {
+                    if(getOFstatus(i,j) == 'f'){
+                        grid += "F ";
+                    } else {
+                        grid += "X ";
+                    }
+                }
+            }
+            grid += "/nl";
+        }
+        
+        return grid;
+    }
+    
     //*** Setters ***
     
     /*****************************************
@@ -212,11 +242,19 @@ public class GameGrid {
     * Interface:
     * ****************************************/
     
-    public void open(int x, int y){
+    public boolean open(int x, int y){
         this.cells[x][y].open(); // open the cell by setting the status to 'o'
         if(getHint(x,y) == 0){
             openAdj(x,y);
         }
+        
+        boolean bombhit = false;
+        
+        if(this.cells[x][y].getbombstatus() == 'B'){
+            bombhit = true;
+        }
+        
+        return bombhit;
     }
     
     /*****************************************

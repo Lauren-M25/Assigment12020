@@ -14,7 +14,7 @@ public class Cell {
     
         int adjbombs = 0; // the number of bombs adjacent to this cell
         char Bstatus = 'X'; // whether or not this cell contains a bomb (b for yes, x for no)
-        char OFstatus = 'c'; // whether or not this cell has been opened (o for opened, c for closed)
+        char OFstatus = 'c'; // whether or not this cell has been opened (o for opened, c for closed, f for flagged)
     
     //*** Instance Variables ***
     
@@ -87,7 +87,7 @@ public class Cell {
     * ****************************************/
     
     public void flag(){
-        this.OFstatus = 'F'; // open the cell by setting the opened status to 'o'
+        this.OFstatus = 'f'; // open the cell by setting the opened status to 'o'
     }
     
     /*****************************************

@@ -33,9 +33,29 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         //gridDimensionsLabel = new javax.swing.JLabel("Please select your grid dimensions:");
         winLoseMessage = new javax.swing.JLabel("You Win");
         winLoseMessage2 = new javax.swing.JLabel("Congradulations!");
-        
-        startGame = new javax.swing.JButton();
+
         playAgain = new javax.swing.JButton();
+        
+        JButton[][] cells = new JButton[10][10];
+        gameGrid = new GameGrid(10);
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                int x = i;
+                int y = j;
+                cells[i][j].addMouseListener(new MouseAdapter(){
+                    public void mouseReleased(MouseEvent e){
+                        Point p = e.getPoint();
+                        if(cells[x][y].contains(p)){
+                            if(e.isMetaDown()){
+                                cellRClicked(cells[x][y], x, y);
+                            } else {
+                                cellLClicked(cells[x][y], x, y);
+                            }
+                        }
+                    }
+                });
+            }
+        }
         
         //String[] dimensionsOptions = {"5 x 5", "6 x 6", "7 x 7", "8 x 8", "9 x 9", "10 x 10"};
         //JComboBox<String> dimensionsChoice = new JComboBox(dimensionsOptions);
@@ -46,36 +66,13 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension (600, 600));
-        GroupLayout layout = new GroupLayout(panel);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        panel.setLayout(layout);
-        
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-        .addComponent(header)
-        //.addComponent(gridDimensionsLabel)
-        .addComponent(winLoseMessage)
-        //.addComponent(dimensionsChoice)
-        .addComponent(startGame));
-        
-        layout.setVerticalGroup(layout.createSequentialGroup()
-        .addComponent(header)
-        //.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-        //.addComponent(gridDimensionsLabel)
-        .addComponent(winLoseMessage)//)
-        //.addComponent(dimensionsChoice)
-        .addComponent(startGame));
-        
-        winLoseMessage.setVisible(false);
-        
-        startGame.setText("Start Game");
-        startGame.addActionListener(new java.awt.event.ActionListener(){
-            public void actionPerformed(java.awt.event.ActionEvent evt){
-                //int dimensions = (dimensionsChoice.getSelectedIndex() + 5);
-                startGameActionPerformed(evt, panel/*, dimensions*/);
+        panel.setLayout(new GridLayout(10, 10));
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                panel.add(cells[i][j]);
             }
-        });
-    
+        }
+
         playAgain.setText("Play Again");
         playAgain.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt){
@@ -91,44 +88,11 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         
     }
     
-    private void startGameActionPerformed(java.awt.event.ActionEvent evt, JPanel panel/*, int dimensions*/){
-        JButton[][] cells = new JButton[10][10];
-        gameGrid = new GameGrid(10);
-        for(int i = 0; i < 10; i++){
-            for(int j = 0; j < 10; j++){
-                int x = i;
-                int y = j;
-                cells[i][j].addMouseListener(new MouseAdapter(){
-                    public void mouseReleased(MouseEvent e){
-                        Point p = e.getPoint();
-                        if(cells[x][y].contains(p)){
-                            if(e.isMetaDown()){
-                                cellRClicked(evt, cells[x][y], x, y);
-                            } else {
-                                cellLClicked(evt, cells[x][y], x, y);
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        panel.setLayout(new GridLayout(10, 10));
-        
-        for(int i = 0; i < 10; i++){
-            for(int j = 0; j < 10; j++){
-                panel.add(cells[i][j]);
-            }
-        }
-        
-        frame.add(panel);
-    }
-    
     private void playAgainActionPerformed(java.awt.event.ActionEvent evt){
         
     }
     
-    private void cellRClicked(java.awt.event.ActionEvent evt, JButton cellButton, int x, int y){
+    private void cellRClicked(JButton cellButton, int x, int y){
         if(gameGrid.getBstatus(x,y) == 'B'){
             cellButton.setText("B");
             lose();
@@ -138,7 +102,7 @@ public class MinesweeperGUI extends javax.swing.JFrame{
         }
     }
     
-    private void cellLClicked(java.awt.event.ActionEvent evt, JButton cellButton, int x, int y){
+    private void cellLClicked(JButton cellButton, int x, int y){
         gameGrid.flag(x,y);
         cellButton.setText("F");
     }

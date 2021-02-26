@@ -27,7 +27,7 @@ public class Minesweeper {  // begin class
 
         String prompt;      // prompt for use in input dialogs
 
-        String delim = "[ :]+"; // delimiter string for splitting input string
+        String delim = "[ ]+"; // delimiter string for splitting input string
         String[] tokens;                        // string array for gathering input
         
         String tabSpace = "      "; // six spaces
@@ -58,20 +58,47 @@ public class Minesweeper {  // begin class
         fout.print(bannerOut);
         
     // ************************ get input **********************
-/* input will now come from an external file so there
-        will not normally be a need for a prompt
     
-        prompt = "Enter your prompt text here. \n"; 
-        prompt += "you may need to add additional lines\n";
-        prompt += "or delete some of these prompt lines.\n\n";
+        prompt = "Welcome to Mine Sweeper! \n";
+        prompt += "Please enter your desired grid dimensions (5 x 5 - 10 x 10)";
 
-        strin = JOptionPane.showInputDialog(bannerOut + prompt);     
-*/
-        // read a line of data from the external text file
+        strin = JOptionPane.showInputDialog(bannerOut + prompt);
+        
+        tokens = strin.split(delim);
+        
+        GameGrid gameGrid = new GameGrid(Integer.parseInt(tokens[0]));
 
     // ************************ processing ***************************
         
+        int cellsopened = 0;
+        boolean bombhit = false;
+    
+        while(cellsopened < (gameGrid.getdimensions() * gameGrid.getdimensions()) || bombhit == true){
+    
+        prompt = "To make a move, enter the row number (starting at 1) and the column number of the cell you wish to open or flag. /nl";
+        prompt += "example: x,y";
+
+        strin = JOptionPane.showInputDialog(bannerOut + prompt);
         
+        delim = "[,]+";
+        
+        tokens = strin.split(delim);
+        
+        int cellX = Integer.parseInt(tokens[0]);
+        int cellY = Integer.parseInt(tokens[1]);
+        
+        prompt = "You have selected cell " + strin + ". Enter O to open, or F to flag.";
+
+        strin = JOptionPane.showInputDialog(bannerOut + prompt);
+        
+        if(strin == "O"){
+            bombhit = gameGrid.open(cellX, cellY);
+        } else {
+            gameGrid.flag(cellX, cellY);
+        }
+        
+        gameGrid.printGrid();
+    }
 
     // ************************ print output ****************************
     
